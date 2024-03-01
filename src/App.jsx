@@ -7,8 +7,7 @@ function App() {
   const [typeError, setTypeError] = useState(null);
   // submit state
   const [excelData, setExcelData] = useState(null);
-  const [assignmentCounter, setAssignmentCounter] = useState(null);
-  const [count, setCount] = useState(0);
+  const [assignmentCount, setAssignmentCount] = useState(null);
   const fixedData = [];
 
   // onchange event
@@ -44,7 +43,7 @@ function App() {
   // submit event
   const handleFileSubmit = (e) => {
     e.preventDefault();
-    console.log(excelFile);
+    //console.log(excelFile);
     for (let i = 0; i < excelFile.length; i++) {
       if (excelFile[i] !== null) {
         const workbook = XLSX.read(excelFile[i], { type: "buffer" });
@@ -52,11 +51,11 @@ function App() {
         const worksheet = workbook.Sheets[worksheetName];
         const data = XLSX.utils.sheet_to_json(worksheet);
         data.forEach((element) => dataFixer(element));
-        console.log(fixedData);
+        //console.log(fixedData);
         dataDeleeter(fixedData);
         assignmentNameCounter(fixedData);
         setExcelData(fixedData);
-        setCount(fixedData.length);
+        console.log(assignmentCount);
       }
     }
   };
@@ -97,39 +96,39 @@ function App() {
         data[i].Total_Points_Earned == data[i].Total_Points_Possible &&
         data[i].Time_Spent > 0
       ) {
-        console.log(
-          "adding idx: " +
-            i +
-            " pnts earned: " +
-            data[i].Total_Points_Earned +
-            " pos pnts: " +
-            data[i].Total_Points_Possible +
-            " tim spent: " +
-            data[i].Time_Spent
-        );
+        // console.log(
+        //   "adding idx: " +
+        //     i +
+        //     " pnts earned: " +
+        //     data[i].Total_Points_Earned +
+        //     " pos pnts: " +
+        //     data[i].Total_Points_Possible +
+        //     " tim spent: " +
+        //     data[i].Time_Spent
+        // );
       } else {
-        console.log(
-          "getting rid of idx: " +
-            i +
-            " pnts earned: " +
-            data[i].Total_Points_Earned +
-            " pos pnts: " +
-            data[i].Total_Points_Possible +
-            " tim spent: " +
-            data[i].Time_Spent
-        );
+        // console.log(
+        //   "getting rid of idx: " +
+        //     i +
+        //     " pnts earned: " +
+        //     data[i].Total_Points_Earned +
+        //     " pos pnts: " +
+        //     data[i].Total_Points_Possible +
+        //     " tim spent: " +
+        //     data[i].Time_Spent
+        // );
         data.splice(i, 1);
         i--;
       }
     }
   };
   const assignmentNameCounter = (data) => {
-    console.log(data);
     //pAN = pastAssignmentName
     let pAN = data[0].Assignment_Name;
     let count = 0;
     let temp = {};
-    const tempArr = []
+    let temp2 = {};
+    const tempArr = [];
     //element is the obj ref
     //index is the index of the array
     //array is the whole array
@@ -142,12 +141,16 @@ function App() {
       } else {
         count++;
         temp[pAN] = count;
-        tempArr.push(temp)
-        temp = {}
       }
     });
-    console.log(tempArr);
-    setAssignmentCounter(tempArr);
+    // console.log(temp);
+    for (const keyVal in temp) {
+      temp2[keyVal] = temp[keyVal];
+      tempArr.push(temp2);
+      temp2 = {};
+    }
+    // console.log(tempArr)
+    setAssignmentCount(tempArr);
   };
   return (
     <div className="wrapper">
@@ -171,7 +174,17 @@ function App() {
         )}
       </form>
       <div>
-        {/*assignmentCounter.map*/}
+        {assignmentCount ? (
+          <div className="assignmentCount">{assignmentCount.map((assignmentCount, index) => (
+            <div key={index}>
+              {Object.keys(assignmentCount).map((key) => (
+                 <p key={key}>[ {key}: {assignmentCount[key]}]</p>
+              ))}
+            </div>
+          ))}</div>
+        ) : (
+          <div>No Stats yet</div>
+        )}
       </div>
       {/* view data */}
       <div className="viewer">
