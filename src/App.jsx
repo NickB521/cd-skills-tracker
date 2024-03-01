@@ -173,10 +173,10 @@ function App() {
           </div>
         )}
       </form>
-      <div>
+      <div className="assignmentCountContainer">
         {assignmentCount ? (
-          <div className="assignmentCount">{assignmentCount.map((assignmentCount, index) => (
-            <div key={index}>
+          <div className="assignmentCountContainer">{assignmentCount.map((assignmentCount, index) => (
+            <div key={index} className="assignmentCount">
               {Object.keys(assignmentCount).map((key) => (
                  <p key={key}>[ {key}: {assignmentCount[key]}]</p>
               ))}
