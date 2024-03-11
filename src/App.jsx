@@ -51,11 +51,11 @@ function App() {
         const worksheet = workbook.Sheets[worksheetName];
         const data = XLSX.utils.sheet_to_json(worksheet);
         data.forEach((element) => dataFixer(element));
-        //console.log(fixedData);
+        console.log(fixedData);
         dataDeleeter(fixedData);
         assignmentNameCounter(fixedData);
         setExcelData(fixedData);
-        console.log(assignmentCount);
+        // console.log(assignmentCount);
       }
     }
   };
@@ -124,6 +124,7 @@ function App() {
   };
   const assignmentNameCounter = (data) => {
     //pAN = pastAssignmentName
+    console.log(data);
     let pAN = data[0].Assignment_Name;
     let count = 0;
     let temp = {};
@@ -175,15 +176,20 @@ function App() {
       </form>
       <div className="assignmentCountContainer">
         {assignmentCount ? (
-          <div className="assignmentCountContainer">{assignmentCount.map((assignmentCount, index) => (
-            <div key={index} className="assignmentCount">
-              {Object.keys(assignmentCount).map((key) => (
-                 <p key={key}>[ {key}: {assignmentCount[key]}]</p>
-              ))}
-            </div>
-          ))}</div>
+          <div className="assignmentCountContainer">
+            {assignmentCount.map((assignmentCount, index) => (
+              <div key={index} className="assignmentCount">
+                {Object.keys(assignmentCount).map((key) => (
+                  <p key={key}>
+                    [ Assignment Name: {key} ]
+                    <br />[ {assignmentCount[key]} interns completed ]
+                  </p>
+                ))}
+              </div>
+            ))}
+          </div>
         ) : (
-          <div>No Stats yet</div>
+          <></>
         )}
       </div>
       {/* view data */}
